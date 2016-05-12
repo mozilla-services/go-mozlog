@@ -16,6 +16,13 @@ func init() {
 	logrus.SetOutput(os.Stdout)
 }
 
+// SetFormatterName the LoggerName for the logrus formatter
+func SetFormatterName(name string) {
+	logrus.SetFormatter(&MozLogFormatter{
+		LoggerName: name,
+	})
+}
+
 // prefixFieldClashes is from logrus package
 func prefixFieldClashes(data logrus.Fields) {
 	_, ok := data["msg"]
