@@ -10,7 +10,7 @@ import (
 
 func init() {
 	logrus.SetFormatter(&MozLogFormatter{
-		LoggerName: "Bouncer",
+		LoggerName: "MozLog",
 	})
 
 	logrus.SetOutput(os.Stdout)
