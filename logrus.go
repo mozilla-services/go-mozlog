@@ -10,10 +10,17 @@ import (
 
 func init() {
 	logrus.SetFormatter(&MozLogFormatter{
-		LoggerName: "Bouncer",
+		LoggerName: "MozLog",
 	})
 
 	logrus.SetOutput(os.Stdout)
+}
+
+// SetFormatterName the LoggerName for the logrus formatter
+func SetFormatterName(name string) {
+	logrus.SetFormatter(&MozLogFormatter{
+		LoggerName: name,
+	})
 }
 
 // prefixFieldClashes is from logrus package
