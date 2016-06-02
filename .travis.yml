@@ -2,4 +2,14 @@ language: go
 
 go:
   - 1.5
+  - 1.6
   - tip
+
+before_install:
+  - mkdir -p $GOPATH/src/go.mozilla.org
+  - mv $GOPATH/src/github.com/mozilla-services/go-mozlog $GOPATH/src/go.mozilla.org/mozlog
+  - go get github.com/Sirupsen/logrus
+  - go get github.com/stretchr/testify/assert
+
+script:
+  - go test go.mozilla.org/mozlog
