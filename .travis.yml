@@ -5,11 +5,10 @@ go:
   - 1.6
   - tip
 
+go_import_path: go.mozilla.org/mozlog
+
+install: true
+
 before_install:
-  - mkdir -p $GOPATH/src/go.mozilla.org
-  - mv $GOPATH/src/github.com/mozilla-services/go-mozlog $GOPATH/src/go.mozilla.org/mozlog
   - go get github.com/Sirupsen/logrus
   - go get github.com/stretchr/testify/assert
-
-script:
-  - go test go.mozilla.org/mozlog
