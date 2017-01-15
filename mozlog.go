@@ -71,7 +71,7 @@ func NewAppLog(loggerName string, msg []byte) *AppLog {
 	now := time.Now().UTC()
 	return &AppLog{
 		Timestamp:  now.UnixNano(),
-		Time:       now.Format(time.RFC3339Nano),
+		Time:       now.Format(time.RFC3339),
 		Type:       "app.log",
 		Logger:     loggerName,
 		Hostname:   hostname,
