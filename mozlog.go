@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -86,4 +87,52 @@ func NewAppLog(loggerName string, msg []byte) *AppLog {
 // ToJSON converts a logline to JSON
 func (a *AppLog) ToJSON() ([]byte, error) {
 	return json.Marshal(a)
+}
+
+func FromJSON(log string) (a AppLog, err error) {
+	err = json.Unmarshal([]byte(log), &a)
+	return
+}
+
+func (a *AppLog) ToString() string {
+	str := fmt.Sprintf("Timestamp=%d Time=%q Type=%q Logger=%q Hostname=%q EnvVersion=%q Pid=%d Severity=%d Fields[",
+		a.Timestamp, a.Time, a.Type, a.Logger, a.Hostname, a.EnvVersion, a.Pid, a.Severity)
+	var namedFields []string
+	for name, value := range a.Fields {
+		val, _ := json.Marshal(value)
+		namedFields = append(namedFields, name+"="+string(val))
+	}
+	str += strings.Join(namedFields, ", ")
+	str += "]"
+	return str
+}
+
+func (a *AppLog) Evaluate() {
+	if a.Timestamp == 0 {
+		fmt.Println("error: nanosecond Timestamp is missing")
+	}
+	if a.Time == "" {
+		fmt.Println("info: RFC3339 Time not set")
+	}
+	if a.Type == "" {
+		fmt.Println("error: Type is missing")
+	}
+	if a.Logger == "" {
+		fmt.Println("error: Logger is missing")
+	}
+	if a.Hostname == "" {
+		fmt.Println("error: Hostname is missing")
+	}
+	if a.EnvVersion != "2.0" {
+		fmt.Printf("error: EnvVersion should be 2.0, not %q", a.EnvVersion)
+	}
+	if a.Pid == 0 {
+		fmt.Println("warning: Pid is missing")
+	}
+	if a.Severity == 0 {
+		fmt.Println("warning: Severity is missing")
+	}
+	if len(a.Fields) == 0 {
+		fmt.Println("error: no field was found")
+	}
 }
